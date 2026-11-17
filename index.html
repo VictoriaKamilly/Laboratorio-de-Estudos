@@ -954,9 +954,14 @@ body.dragging .mx .bk:not(.self), body.dragging.withtools .mx .tool{border-color
    DADOS
    ========================================================= */
 const USERS = {
+<<<<<<< HEAD
   // João e Sofia entram sem PIN (decisão de 17/11/2026); os perfis de adulto continuam com PIN
   sofia: {nome:'Sofia', role:'aluno', kid:'sofia', ic:'✦', cor:'#7b5fae', papel:'Aluna', h:null},
   joao:  {nome:'João',  role:'aluno', kid:'joao',  ic:'⚽', cor:'#10233f', papel:'Aluno', h:null},
+=======
+  sofia: {nome:'Sofia', role:'aluno', kid:'sofia', ic:'✦', cor:'#7b5fae', papel:'Aluna', h:'geaak7'},
+  joao:  {nome:'João',  role:'aluno', kid:'joao',  ic:'⚽', cor:'#10233f', papel:'Aluno', h:'geb94u'},
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
   resp:  {nome:'Responsáveis', role:'resp', ic:'👨‍👩‍👧', cor:'#c77d12', papel:'Acesso de responsável', h:'geagft'},
   mari:  {nome:'Mari', role:'prof', ic:'📚', cor:'#1d6b7a', papel:'Professora · administração', h:'geadx2'},
   demo:  {nome:'Demonstração', role:'demo', ic:'🧪', cor:'#4b6b8a', papel:'Para testar · não salva nada', h:null}
@@ -1957,7 +1962,11 @@ function renderPick(){
   $$('#uGrid .ubtn').forEach(b => b.onclick = () => openPin(b.dataset.u));
 }
 function openPin(k){
+<<<<<<< HEAD
   if (USERS[k].role === 'demo' || USERS[k].role === 'aluno') return login(k);   // demonstração e alunos: sem PIN
+=======
+  if (USERS[k].role === 'demo') return login(k);   // demonstração: sem PIN e sem salvar
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
   pinUser = k; pinBuf = '';
   $('#lPick').hidden = true; $('#lPin').hidden = false;
   $('#pinWho').innerHTML = `${USERS[k].ic} ${esc(USERS[k].nome)}`;
@@ -2235,10 +2244,17 @@ function renderCrono(){
       ${(!kid||kid==='joao')?'<div class="tip j">⚽ “Quem confere antes de entregar, entrega certo.”</div>':''}
       ${(!kid||kid==='sofia')?'<div class="tip s">✦ “Tentar primeiro é o meu superpoder.”</div>':''}</div></section>`;
   }
+<<<<<<< HEAD
   // backup: baixar e restaurar o backup integral são exclusivos da professora (decisão registrada na etapa 2)
   let temSeg = false; try { temSeg = !!localStorage.getItem(LSK_SEG); } catch(e){}
   const ultBk = DB.meta && DB.meta.ultimoBackup;
   const admin = isProf() ? `<section class="card" id="bkCard"><h2>Backup dos dados</h2>
+=======
+  // backup: a professora baixa e restaura; os responsáveis só baixam uma cópia (restaurar é exclusivo da professora)
+  let temSeg = false; try { temSeg = !!localStorage.getItem(LSK_SEG); } catch(e){}
+  const ultBk = DB.meta && DB.meta.ultimoBackup;
+  const admin = (isProf() || isResp()) ? `<section class="card" id="bkCard"><h2>Backup dos dados</h2>
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
       <p class="hint" style="margin:0 0 8px">Os dados (agendas, tarefas, flashcards, jogos e relatórios) ficam salvos neste navegador, neste tablet. Baixe um arquivo de backup com frequência e guarde-o fora do tablet.${isProf() ? ' Para recuperar os dados, use "Restaurar backup": a plataforma mostra o que tem no arquivo e pede confirmação antes de substituir.' : ''}</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <button class="btn" id="bkDown">⬇️ Baixar backup</button>
@@ -2298,7 +2314,11 @@ function resumoDB(d){
   };
 }
 function baixarBackup(){
+<<<<<<< HEAD
   if (!isProf() || REAL_DB){ toast('O backup é feito pela professora.'); return; }
+=======
+  if (!(isProf() || isResp()) || REAL_DB){ toast('O backup é feito pela professora ou pelos responsáveis.'); return; }
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
   const agora = new Date();
   DB.meta = DB.meta || {}; const antes = DB.meta.ultimoBackup; DB.meta.ultimoBackup = agora.getTime();
   const pacote = {app:'laboratorio-estudos', tipo:'backup-completo', schema: SCHEMA, versaoApp: APP_VERSAO, exportadoEm: agora.toISOString(), exportadoPor: USER.id === 'mari' ? 'professora' : 'responsáveis', resumo: resumoDB(DB), dados: DB};
@@ -2744,7 +2764,10 @@ const DSS = {};   // estado da tela por usuário|matéria
    Só a APRESENTAÇÃO muda: cada radical é mostrado como a palavra completa e acentuada que aparece
    na resposta-modelo, na pergunta, no checklist ou nos flashcards e glossário da matéria. */
 const KW_CACHE = new Map();
+<<<<<<< HEAD
 const KW_ROTULO_EXTRA = {adic:'adição'};   // radicais que não aparecem por extenso em nenhum texto da matéria
+=======
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
 const kwNorm = t => normTxt(t).replace(/³/g, '3').replace(/²/g, '2');
 function kwRotulos(s, it){
   if (KW_CACHE.has(it)) return KW_CACHE.get(it);
@@ -2760,7 +2783,11 @@ function kwRotulos(s, it){
       if (!(parts[0].length < 3 ? nw[i] === parts[0] : nw[i].startsWith(parts[0]))) continue;
       if (parts.every((p, j) => j === 0 || (nw[i + j] || '').startsWith(p))) lab = words.slice(i, i + parts.length).join(' ');
     }
+<<<<<<< HEAD
     if (!lab) lab = parts.map(p => { const i = acha(p); return i >= 0 ? words[i] : (KW_ROTULO_EXTRA[p] || p); }).join(' ');   // palavra por palavra
+=======
+    if (!lab) lab = parts.map(p => { const i = acha(p); return i >= 0 ? words[i] : p; }).join(' ');   // palavra por palavra
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
     map[k] = lab;
   });
   KW_CACHE.set(it, map); return map;
@@ -5374,9 +5401,12 @@ function renderReport(kidArg){
   const sub = me ? (kid === 'demo' ? 'Tudo o que você fizer aqui some quando sair da demonstração. Nada vai para os relatórios de João e Sofia.' : 'Aqui aparecem os seus resultados, só os seus. Cada atividade que você termina entra aqui sozinha.')
                  : `Relatório individual · somente atividades concluídas${isProf() ? ' · painel da professora' : ''}.`;
   const voce = me ? 'você' : P.nome;
+<<<<<<< HEAD
   // C11: "Ainda não realizadas" (só a professora) aparece também quando o estudante ainda não concluiu nada
   const secNaoFeitas = isProf() ? `<section class="card vcard">${qhead('🧭 Ainda não realizadas', `Jogos e desafios que ${P.nome} ainda não concluiu nenhuma vez.`)}
     ${naoFeitas.length ? `<div class="chips">${naoFeitas.map(t => `<span class="chip" style="cursor:default">${esc(t)}</span>`).join('')}</div>` : '<p class="hint">Nenhum jogo pendente: todos já foram concluídos pelo menos uma vez.</p>'}</section>` : '';
+=======
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
 
   V.innerHTML = `
   <section class="card vcard rhead" style="--c:${cor}">
@@ -5385,7 +5415,11 @@ function renderReport(kidArg){
     <div class="rfil"><span class="rfl">Disciplina</span>${chips('s', [['all','Todas']].concat(DISC.map(s => [s, SUBJ[s].nome])))}</div>
     <p class="hint" style="margin:6px 0 0">A disciplina escolhida vale para conteúdos, evolução e histórico. Período: ${perTxt}.</p>
   </section>
+<<<<<<< HEAD
   ${!att.length && !temAnt ? `<section class="card vcard"><div class="rempty"><div class="em">${me ? th.ico : '📭'}</div><b>${me ? 'Ainda não há atividades terminadas.' : `${P.nome} ainda não concluiu atividades${RS.per === 'all' ? '' : ' neste período'}.`}</b><p class="hint">Os resultados aparecem aqui assim que uma atividade é terminada (jogo até o fim, prova entregue, partida ou treino encerrado). Abrir uma atividade não conta.</p></div></section>${secNaoFeitas}` : `
+=======
+  ${!att.length && !temAnt ? `<section class="card vcard"><div class="rempty"><div class="em">${me ? th.ico : '📭'}</div><b>${me ? 'Ainda não há atividades terminadas.' : `${P.nome} ainda não concluiu atividades${RS.per === 'all' ? '' : ' neste período'}.`}</b><p class="hint">Os resultados aparecem aqui assim que uma atividade é terminada (jogo até o fim, prova entregue, partida ou treino encerrado). Abrir uma atividade não conta.</p></div></section>` : `
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
   <section class="card vcard">
     ${qhead(me ? '🏁 Meu resumo' : '🏁 Resumo', `Atividades concluídas em ${perTxt}.`)}
     <div class="rtiles">
@@ -5433,7 +5467,12 @@ function renderReport(kidArg){
     <div class="rtw"><table class="rtab"><tr><th>Disciplina</th><th>Cards "sei explicar"</th><th>Cards "revisar"</th><th>Discursivas respondidas</th><th>Completas</th><th>Faltou parte</th><th>Errou</th></tr>
       ${DISC.map((s, i) => { const f = fcRows[i], d = discRows[i]; return `<tr><td><span class="rdot" style="background:${SUBJ[s].cor}"></span><b>${SUBJ[s].nome}</b></td><td>${f.ok} de ${f.n}</td><td>${f.rv}</td><td>${d.c + d.f + d.e} de ${d.tot}</td><td>${d.c}</td><td>${d.f}</td><td>${d.e}</td></tr>`; }).join('')}</table></div>
   </section>
+<<<<<<< HEAD
   ${secNaoFeitas}
+=======
+  ${isProf() ? `<section class="card vcard">${qhead('🧭 Ainda não realizadas', `Jogos e desafios que ${P.nome} ainda não concluiu nenhuma vez.`)}
+    ${naoFeitas.length ? `<div class="chips">${naoFeitas.map(t => `<span class="chip" style="cursor:default">${esc(t)}</span>`).join('')}</div>` : '<p class="hint">Todos os jogos já foram concluídos pelo menos uma vez.</p>'}</section>` : ''}
+>>>>>>> b83687df364f720f5f65b40005de9092844ab51f
   ${temAnt ? `<section class="card vcard">${qhead('🗂️ Registros anteriores', `Resultados guardados antes do registro detalhado (${D.since ? 'iniciado em ' + fDT(D.since).slice(0, 10) : ''}). Estes registros só têm resumo: não têm horário nem tempo e não entram nos gráficos.`)}
     ${antGames.length ? `<div class="rtw"><table class="rtab"><tr><th>Atividade</th><th>Vezes</th><th>Último resultado</th><th>Melhor</th><th>Data</th></tr>${antGames.map(a => `<tr><td><span class="rdot" style="background:${SUBJ[a.s] ? SUBJ[a.s].cor : '#999'}"></span>${esc(a.nome)}</td><td>${a.r.n || 1}</td><td>${a.r.last}${a.tt ? '/' + a.tt : ''}</td><td>${a.r.best}${a.tt ? '/' + a.tt : ''}</td><td>${a.r.dt ? ddmm(a.r.dt) + '/' + a.r.dt.slice(0, 4) : '—'}</td></tr>`).join('')}</table></div>` : ''}
     ${antProva.map(([s, l]) => `<p class="hint" style="margin:6px 0 0"><b>Prova relâmpago de ${SUBJ[s] ? SUBJ[s].nome : s}:</b> ${l.map(p => `${p.d}: nota ${p.n.toFixed(1).replace('.', ',')}`).join(' · ')}</p>`).join('')}
